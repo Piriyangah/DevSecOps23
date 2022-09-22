@@ -1,7 +1,7 @@
 {
-  "name": "IKT-PWA-01",
+  "name": "IKT-PWA",
   "version": "1.0.0",
-  "description": "Grundgerüst einer PWA",
+  "description": "Browse hundreds of tried-and-true vegan recipes that are full-flavored, comforting, and easy to make. Going vegan has never been easier or tasted so good!",
   "main": "index.js",
   "scripts": {
     "start": "http-server -c-1"
@@ -15,13 +15,16 @@
     "htw",
     "fiw"
   ],
-  "author": "J. freiheit",
+  "author": "A. Rodionova",
   "license": "ISC",
   "devDependencies": {
     "http-server": "^14.1.0",
     "nodemon": "^2.0.20"
   },
   "dependencies": {
-    "ngrok": "^4.3.3"
+    "idb": "^7.1.0",
+    "ngrok": "^4.3.3",
+    "ol": "^7.1.0",
+    "watch": "^1.0.2"
   }
 }

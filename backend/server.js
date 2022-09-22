@@ -16,6 +16,7 @@ app.use(cors());
 app.use('/posts', postsRoutes);
 app.use('/upload', uploadRoutes);
 app.use('/download', downloadRoute);
+app.use('/image', uploadRoutes);
 app.use('/delete', deleteRoute);
 app.use('/subscription', subscriptionRoute);
 

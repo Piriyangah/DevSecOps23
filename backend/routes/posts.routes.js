@@ -6,8 +6,8 @@ const mongoose = require('mongoose')
 require('dotenv').config()
 const webpush = require('web-push');
 
-const publicVapidKey = 'BEzPNFV-8NCohCWCMTePv6RPg2CpXEbkT96oV_kKrwbn8jb4bXOekSPjhqAHsfNGi9D4_tdZ90rllxcUlcakNHY';
-const privateVapidKey = 'xP9WBlUyTblF_wcjeZqxTlV_kJJqceA03qiwfxY26Jg';
+const publicVapidKey = 'BHDDsODPJZ4MhNc9BHMb5DqRaJv4_7AMta8u_CoZXl2HU87y4rMWOeM7cI6OB2yp3Ho1ULSA7fZN_fH_DOjU3tQ';
+const privateVapidKey = 'q9SV8ylhawIx2Bzh6oLFAJ4n6VL7jIfzVPqy6ySYCA8';
 const pushSubscription = {
     endpoint: 'https://fcm.googleapis.com/fcm/send/f43e_8p5n8s:APA91bGe4ebvK1ubLKmVr31PgKLune2VRjWnCGvyJF13V_GW3DBaYa84PolMBz4DVJaDnQyfWFm28FszrqzRnPA_G6PXRifoHqpxJj9dshWtsrvnHhmsbQTZ9WnyTsvLbZKSmOponOhB',
     expirationTime: null,
@@ -18,7 +18,7 @@ const pushSubscription = {
   };
 
 function sendNotification() {
-    webpush.setVapidDetails('mailto:emina.benalia@htw-berlin.de', publicVapidKey, privateVapidKey);
+    webpush.setVapidDetails('mailto:Anastasia.Rodionova@Student.HTW-Berlin.de', publicVapidKey, privateVapidKey);
     const payload = JSON.stringify({
         title: 'New Push Notification',
         content: 'New data in database!'
