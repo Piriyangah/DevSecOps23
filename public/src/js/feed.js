@@ -5,17 +5,18 @@ let sharedMomentsArea = document.querySelector('#shared-moments');
 let form = document.querySelector('form');
 let titleInput = document.querySelector('#title');
 let locationInput = document.querySelector('#location');
+let file = null;
+let titleValue = '';
+let locationValue = '';
+let imageURI = '';
 let videoPlayer = document.querySelector('#player');
 let canvasElement = document.querySelector('#canvas');
 let captureButton = document.querySelector('#capture-btn');
 let imagePicker = document.querySelector('#image-picker');
 let imagePickerArea = document.querySelector('#pick-image');
-let file = null;
-let titleValue = '';
-let locationValue = '';
-let imageURI = '';
 let locationButton = document.querySelector('#location-btn');
 let locationLoader = document.querySelector('#location-loader');
+let mapDiv = document.querySelector('#map');
 let fetchedLocation;
 
 locationButton.addEventListener('click', event => {
