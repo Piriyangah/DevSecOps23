@@ -20,19 +20,71 @@ let mapDiv = document.querySelector('#map');
 let fetchedLocation;
 
 locationButton.addEventListener('click', event => {
-  if(!('geolocation' in navigator)) {
+  if (!('geolocation' in navigator)) {
       return;
   }
 
   locationButton.style.display = 'none';
   locationLoader.style.display = 'block';
 
-  navigator.geolocation.getCurrentPosition( position => {
+  navigator.geolocation.getCurrentPosition(position => {
       locationButton.style.display = 'inline';
       locationLoader.style.display = 'none';
-      fetchedLocation = { latitude: position.coords.latitude, longitude: position.coords.longitude };
+      fetchedLocation = {latitude: position.coords.latitude, longitude: position.coords.longitude};
       console.log('current position: ', fetchedLocation);
-      locationInput.value = 'In Berlin';
+
+      let nominatimURL = 'https://nominatim.openstreetmap.org/reverse';
+      nominatimURL += '?format=jsonv2';   // format=[xml|json|jsonv2|geojson|geocodejson]
+      nominatimURL += '&lat=' + fetchedLocation.latitude;
+      nominatimURL += '&lon=' + fetchedLocation.longitude;
+
+      fetch(nominatimURL)
+          .then((res) => {
+              console.log('nominatim res ...', res);
+              return res.json();
+          })
+          .then((data) => {
+              console.log('nominatim res.json() ...', data);
+              locationInput.value = data.display_name;
+              return data;
+          })
+          .then(d => {
+              locationButton.style.display = 'none';
+              locationLoader.style.display = 'none';
+              mapDiv.style.display = 'block';
+
+              const map = new ol.Map({
+                  target: 'map',
+                  layers: [
+                      new ol.layer.Tile({
+                          source: new ol.source.OSM()
+                      })
+                  ],
+                  view: new ol.View({
+                      center: ol.proj.fromLonLat([fetchedLocation.longitude, fetchedLocation.latitude]),
+                      zoom: 12
+                  })
+              });
+
+              const layer = new ol.layer.Vector({
+                  source: new ol.source.Vector({
+                      features: [
+                          new ol.Feature({
+                              geometry: new ol.geom.Point(ol.proj.fromLonLat([fetchedLocation.longitude, fetchedLocation.latitude]))
+                          })
+                      ]
+                  })
+              });
+
+              map.addLayer(layer);
+
+              console.log('map', map)
+          })
+          .catch((err) => {
+              console.error('err', err)
+              locationInput.value = 'In Berlin';
+          });
+
       document.querySelector('#manual-location').classList.add('is-focused');
   }, err => {
       console.log(err);
@@ -40,7 +92,7 @@ locationButton.addEventListener('click', event => {
       locationLoader.style.display = 'none';
       alert('Couldn\'t fetch location, please enter manually!');
       fetchedLocation = null;
-  }, { timeout: 5000});
+  }, {timeout: 5000});
 });
 
 function initializeLocation() {
@@ -49,16 +101,140 @@ function initializeLocation() {
   }
 }
 
+//Kamera
+function initializeMedia() {
+  if(!('mediaDevices' in navigator)) {
+      navigator.mediaDevices = {};
+  }
+
+  if(!('getUserMedia' in navigator.mediaDevices)) {
+      navigator.mediaDevices.getUserMedia = function(constraints) {
+          let getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+          if(!getUserMedia) {
+              return Promise.reject(new Error('getUserMedia is not implemented'));
+          }
+
+          return new Promise( (resolve, reject) => {
+              getUserMedia.call(navigator, constraints, resolve, reject);
+          })
+      }
+  }
+
+  navigator.mediaDevices.getUserMedia({video: true})
+      .then( stream => {
+          videoPlayer.srcObject = stream;
+          videoPlayer.style.display = 'block';
+      })
+      .catch( err => {
+          imagePickerArea.style.display = 'block';
+      });
+}
+
+imagePicker.addEventListener('change', event => {
+  file = event.target.files[0];
+});
+
+function sendDataToBackend() {
+  const formData = new FormData();
+  formData.append('title', titleValue);
+  formData.append('location', locationValue);
+  formData.append('file', file);
+
+  console.log('formData', formData)
+
+  fetch('http://localhost:3000/posts', {
+      method: 'POST',
+      body: formData
+  })
+  .then( response => {
+      console.log('Data sent to backend ...', response);
+      return response.json();
+  })
+  .then( data => {
+      console.log('data ...', data);
+      const newPost = {
+          title: data.title,
+          location: data.location,
+          image_id: imageURI
+      }
+      updateUI([newPost]);
+  });
+}
+
 
 function openCreatePostModal() {
   createPostArea.style.display = 'block';
+  setTimeout( () => {
+    createPostArea.style.transform = 'translateY(0)';
+}, 1);
   initializeLocation();
+  initializeMedia();
 }
 
 function closeCreatePostModal() {
-  createPostArea.style.display = 'none';
+  imagePickerArea.style.display = 'none';
+  videoPlayer.style.display = 'none';
+  canvasElement.style.display = 'none';
+  if(videoPlayer.srcObject) {
+    videoPlayer.srcObject.getVideoTracks().forEach( track => track.stop());
+  }
+  setTimeout( () => {
+    createPostArea.style.transform = 'translateY(100vH)';
+  }, 1);
   locationButton.style.display = 'inline';
-    locationLoader.style.display = 'none';
+  locationLoader.style.display = 'none';
+}
+
+form.addEventListener('submit', event => {
+  event.preventDefault(); // nicht absenden und neu laden
+
+  if (file == null) {
+      alert('Erst Foto aufnehmen!')
+      return;
+  }
+  if (titleInput.value.trim() === '' || locationInput.value.trim() === '') {
+      alert('Bitte Titel und Location angeben!')
+      return;
+  }
+
+  closeCreatePostModal();
+
+  titleValue = titleInput.value;
+  locationValue = locationInput.value;
+
+  if ('serviceWorker' in navigator && 'SyncManager' in window) {
+      if (!navigator.onLine) {
+          navigator.serviceWorker.ready
+              .then(sw => {
+                  let post = {
+                      id: new Date().toISOString(),
+                      title: titleValue,
+                      location: locationValue,
+                      image_id: file      // file durch den Foto-Button belegt
+                  };
+                  writeData('sync-posts', post)
+                      .then(() => {
+                          return sw.sync.register('sync-new-post');
+                      })
+                      .then(() => {
+                          let snackbarContainer = new MaterialSnackbar(document.querySelector('#confirmation-toast'));
+                          let data = {message: 'Eingaben zum Synchronisieren gespeichert!', timeout: 2000};
+                          snackbarContainer.showSnackbar(data);
+                      });
+              });
+      } else {
+          sendDataToBackend();
+      }
+  } else {
+      sendDataToBackend();
+  }
+});
+
+function initializeLocation() {
+  if (!('geolocation' in navigator)) {
+      locationButton.style.display = 'none';
+  }
 }
 
 shareImageButton.addEventListener('click', openCreatePostModal);
