@@ -186,6 +186,68 @@ function closeCreatePostModal() {
   locationLoader.style.display = 'none';
 }
 
+
+function createCard(card) {
+    let cardWrapper = document.createElement('div');
+    cardWrapper.className = 'shared-moment-card mdl-card mdl-shadow--2dp';
+    let cardTitle = document.createElement('div');
+    cardTitle.className = 'mdl-card__title';
+    let image = new Image();
+    image.src = card.image_id;
+    cardTitle.style.backgroundImage = 'url('+ image.src +')';
+    cardTitle.style.backgroundSize = 'cover';
+    cardTitle.style.borderRadius = '30px';
+    cardTitle.style.marginBottom = '30px';
+    cardTitle.style.marginTop = '30px';
+  
+    cardWrapper.appendChild(cardTitle);
+  
+    let cardTitleTextElement = document.createElement('div');
+    cardTitleTextElement.className = 'mdl-card__title-text';
+    cardTitleTextElement.textContent = card.title;
+    // cardTitleTextElement.classList.add('whiteText');
+  
+    cardWrapper.appendChild(cardTitleTextElement)
+  
+    let cardTitleTextTextElement = document.createElement('p');
+    cardTitleTextTextElement.className = 'mdl-card__text-text';
+    cardTitleTextTextElement.textContent = card.text;
+  
+  
+    cardWrapper.appendChild(cardTitleTextTextElement);
+    let cardSupportingText = document.createElement('p');
+    cardSupportingText.className = 'mdl-card__supporting-text';
+    cardSupportingText.textContent = card.location;
+    cardWrapper.appendChild(cardSupportingText);
+    componentHandler.upgradeElement(cardWrapper);
+    sharedMomentsArea.appendChild(cardWrapper);
+  }
+
+  fetch('http://localhost:3000/posts')
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      console.log('From backend ...', data);
+      updateUI(data);
+    })
+    .catch( (err) => {
+      if('indexedDB' in window) {
+        readAllData('posts')
+            .then( data => {
+              console.log('From cache ...', data);
+              updateUI(data);
+            })
+      }
+    });
+
+    function updateUI(data) {
+        for(let card of data)
+        {
+          createCard(card);
+        }
+      }
+
 form.addEventListener('submit', event => {
   event.preventDefault(); // nicht absenden und neu laden
 
@@ -240,3 +302,26 @@ function initializeLocation() {
 shareImageButton.addEventListener('click', openCreatePostModal);
 
 closeCreatePostModalButton.addEventListener('click', closeCreatePostModal);
+
+captureButton.addEventListener('click', event => {
+    event.preventDefault(); // nicht absenden und neu laden
+    canvasElement.style.display = 'block';
+    videoPlayer.style.display = 'none';
+    captureButton.style.display = 'none';
+    let context = canvasElement.getContext('2d');
+    context.drawImage(videoPlayer, 0, 0, canvas.width, videoPlayer.videoHeight / (videoPlayer.videoWidth / canvas.width));
+    videoPlayer.srcObject.getVideoTracks().forEach( track => {
+      track.stop();
+    })
+    imageURI = canvas.toDataURL("image/jpg");
+    // console.log('imageURI', imageURI)       // base64-String des Bildes
+  
+    fetch(imageURI)
+        .then(res => {
+          return res.blob()
+        })
+        .then(blob => {
+          file = new File([blob], "myFile.jpg", { type: "image/jpg" })
+          console.log('file', file)
+        })
+  });
