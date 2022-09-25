@@ -11,6 +11,17 @@ if ('serviceWorker' in navigator) {
         );
 }
 
+function askForNotificationPermission() {
+    Notification.requestPermission( result => {
+        console.log('User choice', result);
+        if(result !== 'granted') {
+            console.log('No notification permission granted');
+        } else {
+            configurePushSubscription();
+        }
+    });
+}
+
 function configurePushSubscription() {
     if(!('serviceWorker' in navigator)) {
         return
@@ -33,4 +44,11 @@ function configurePushSubscription() {
                 // already subscribed
             }
         });
+}
+
+if('Notification' in window && 'serviceWorker' in navigator) {
+    for(let button of enableNotificationsButtons) {
+        button.style.display = 'inline-block';
+        button.addEventListener('click', askForNotificationPermission);
+    }
 }
