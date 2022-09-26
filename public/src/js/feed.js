@@ -18,6 +18,7 @@ let locationButton = document.querySelector('#location-btn');
 let locationLoader = document.querySelector('#location-loader');
 let mapDiv = document.querySelector('#map');
 let fetchedLocation;
+let networkDataReceived = false;
 
 locationButton.addEventListener('click', event => {
   if (!('geolocation' in navigator)) {
@@ -264,6 +265,9 @@ form.addEventListener('submit', event => {
 
   titleValue = titleInput.value;
   locationValue = locationInput.value;
+  console.log('titleInput', titleValue)
+  console.log('locationInput', locationValue)
+  console.log('file', file)
 
   if ('serviceWorker' in navigator && 'SyncManager' in window) {
       if (!navigator.onLine) {

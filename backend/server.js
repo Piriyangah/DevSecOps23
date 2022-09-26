@@ -13,6 +13,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+
 app.use('/posts', postsRoutes);
 app.use('/upload', uploadRoutes);
 app.use('/download', downloadRoute);
