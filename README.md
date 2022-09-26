@@ -6,7 +6,6 @@ Dieses Projekt enthält die Semesteraufgabe aus - aktuelle Trends der IKT 2022. 
 
 - Zum Ausführen des Projektes wird [Node.js](https://nodejs.org) verendet. Sie müssen es auf Ihren Rechner installieren. 
 
-- In der Wahl Ihrer IDE sind Sie völlig frei. Empfehlungen finden Sie unter [https://freiheit.f4.htw-berlin.de/ikt/tools/#integrated-development-environment-ide](https://freiheit.f4.htw-berlin.de/ikt/tools/#integrated-development-environment-ide)
 
 - Zum Starten des Projektes wechseln Sie im Terminal (Terminal Ihres Rechners oder das Terminal in der IDE) in den Projektordner (`cd IKT-PWA-01`) und führen dort 
 
@@ -20,7 +19,7 @@ Dieses Projekt enthält die Semesteraufgabe aus - aktuelle Trends der IKT 2022. 
 
 	ein, um Ihr Projekt auszuführen (Es wird der `http-server` mit der Option `-c-1` gestartet. Diese Option disabled Caching). Klicken Sie danach auf [localhost:8080](http://localhost:8080) oder geben Sie die URL direkt in Ihren Browser ein.
 
-- Um das Backend zu starten müssen Sie aus dem Projektordner (IKT-PWA) in den Backend Ordner wechseln mit cd backend und dann mit npm run watch starten
+- Um das Backend zu starten müssen Sie aus dem Projektordner in den Backend Ordner wechseln mit cd backend und dann mit npm run watch starten
 
 ## Progressive Web Application hat:
 
