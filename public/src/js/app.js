@@ -11,6 +11,30 @@ if ('serviceWorker' in navigator) {
         );
 }
 
+function displayConfirmNotification() {
+    if('serviceWorker' in navigator) {
+        let options = { 
+            body: 'You successfully subscribed to our Notification service!',
+            icon: '/src/images/icons/96x96.png',
+            image: '/src/images/1.jpg',
+            lang: 'de-DE',
+            vibrate: [100, 50, 200],
+            badge: '/src/images/icons/96x96.png',
+            tag: 'confirm-notification',
+            renotify: true,
+            actions: [
+                { action: 'confirm', title: 'Ok', icon: '/src/images/icons/96x96.png' },
+                { action: 'cancel', title: 'Cancel', icon: '/src/images/icons/96x96.png' },
+            ]
+        };
+
+        navigator.serviceWorker.ready
+            .then( sw => {
+                sw.showNotification('Successfully subscribed (from SW)!', options);
+            });
+    }
+}
+
 function askForNotificationPermission() {
     Notification.requestPermission( result => {
         console.log('User choice', result);
@@ -20,6 +44,29 @@ function askForNotificationPermission() {
             configurePushSubscription();
         }
     });
+}
+
+
+function urlBase64ToUint8Array(base64String) {
+    var padding = '='.repeat((4 - base64String.length % 4) % 4);
+    var base64 = (base64String + padding)
+        .replace(/\-/g, '+')
+        .replace(/_/g, '/');
+
+    var rawData = window.atob(base64);
+    var outputArray = new Uint8Array(rawData.length);
+
+    for (var i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
+
+if('Notification' in window) {
+    for(let button of enableNotificationsButtons) {
+        button.style.display = 'inline-block';
+        button.addEventListener('click', askForNotificationPermission);
+    }
 }
 
 function configurePushSubscription() {
@@ -36,13 +83,30 @@ function configurePushSubscription() {
         .then( sub => {
             if(sub === null) {
                 // create a new subscription
-                let vapidPublicKey = 'BHDDsODPJZ4MhNc9BHMb5DqRaJv4_7AMta8u_CoZXl2HU87y4rMWOeM7cI6OB2yp3Ho1ULSA7fZN_fH_DOjU3tQ';
-                swReg.pushManager.subscribe({
+                let vapidPublicKey = 'BDwTqi0wwa_paNs4RDlP550-CP-Pyoi92hVh9xpPhehbwGIdqQmEJaG9rgdxBDgxFZW-Q1lQ-N7gDqCNSYwx7tY';
+                let convertedVapidPublicKey = urlBase64ToUint8Array(vapidPublicKey);
+                return swReg.pushManager.subscribe({
                     userVisibleOnly: true,
+                    applicationServerKey: convertedVapidPublicKey,
                 });
             } else {
                 // already subscribed
             }
+        })
+        .then( newSub => {
+            return fetch('http://localhost:3000/subscription', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(newSub)
+            })
+            .then( response => {
+                if(response.ok) {
+                    displayConfirmNotification();
+                }
+            })
         });
 }
 
