@@ -18,126 +18,6 @@
     display: inline;
   }
 
-.welcome-single-slide {
-    position: relative;
-    z-index: 1;
-    overflow: hidden
-}
-
-.welcome-single-slide .project_title a > h5 {
-    color: #ffffff;
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 0;
-}
-
-.welcome-single-slide .project_title {
-    position: absolute;
-    content: "";
-    bottom: -300px;
-    left: 0;
-    z-index: 3;
-    background: #BED;
-    padding: 30px;
-    width: 100%;
-    height: auto;
-    -webkit-transition-duration: 750ms;
-    transition-duration: 750ms;
-}
-
-.welcome-single-slide:hover .project_title {
-    bottom: 0;
-}
-
-.welcome-single-slide .post-date-commnents a {
-    font-size: 14px;
-    font-weight: 400;
-    color: #fff;
-    position: relative;
-    z-index: 1;
-    margin-bottom: 10px;
-}
-
-.welcome-single-slide .post-date-commnents a:hover {
-    color: rgba(255, 255, 255, 0.9);
-}
-
-
-.welcome-single-slide .post-date-commnents a:first-child {
-    margin-right: 30px;
-}
-
-.welcome-single-slide .post-date-commnents a:first-child:after {
-    width: 2px;
-    height: 80%;
-    content: '';
-    position: absolute;
-    top: 10%;
-    right: -14px;
-    z-index: 2;
-    background-color: #fff;
-}
-
-
-.welcome-post-sliders {
-    position: relative;
-    z-index: 1;
-}
-
-.welcome-post-sliders .owl-prev {
-    position: absolute;
-    width: 10%;
-    background-color: transparent;
-    height: 100%;
-    top: 0;
-    left: 0;
-    cursor: url(images/core-img/back.png), auto !important;
-    z-index: 9;
-}
-
-.welcome-post-sliders .owl-next {
-    position: absolute;
-    width: 10%;
-    background-color: transparent;
-    height: 100%;
-    top: 0;
-    right: 0;
-    cursor: url(images/core-img/next.png), auto !important;
-}
-
-/* --------------------
-:: 5.0 Top Feature Area CSS 
--------------------- */
-
-.categories_area {
-    padding: 80px 0 50px 0;
-}
-
-.single_catagory {
-    position: relative;
-    z-index: 1;
-    margin-bottom: 30px;
-}
-
-.single_catagory img {
-    border-radius: 20px;
-}
-
-.catagory-title {
-    width: 200px;
-    height: 50px;
-    background-color: #fff;
-    position: absolute;
-    top: 50%;
-    text-align: center;
-    border-radius: 30px;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    -webkit-transition-duration: 500ms;
-    transition-duration: 500ms;
-}
-
 @media (min-width: 768px) and (max-width: 991px) {
     .post-author a,
     .post-date a,
@@ -147,9 +27,8 @@
         font-size: 12px;
     }
     .navbar-toggler {
-        background-color: #f0f4f4;
+        background-color: #dcacfc;
         width: 100%;
-        color: #dcacfc;
         margin-bottom: 30px;
     }
     .footer_area .navbar-toggler {
@@ -191,7 +70,6 @@
         margin-left: 15px;
     }
     .navbar-toggler {
-        background-color: #f0f4f4;
         width: 100%;
         color:#dcacfc;
         margin-bottom: 30px;

@@ -41,17 +41,14 @@ router.patch('/posts/:id', async(req, res) => {
         const post = await Post.findOne({ _id: req.params.id })
 
         if (req.body.title) {
-            post.title = req.body.title
-        }
+            post.title = req.body.title }
 
         if (req.body.location) {
-            post.location = req.body.location
-        }
+            post.location = req.body.location }
 
         if (req.body.image_id) {
-            post.image_id = req.body.image_id
-        }
-
+            post.image_id = req.body.image_id}
+            
         await Post.updateOne({ _id: req.params.id }, post);
         res.send(post)
     } catch {

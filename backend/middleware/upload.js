@@ -1,15 +1,13 @@
 const multer = require("multer");
 require('dotenv').config();
 
-const {
-    GridFsStorage
-} = require("multer-gridfs-storage");
+const {GridFsStorage} = require("multer-gridfs-storage");
 
 const storage = new GridFsStorage({
     url: process.env.DB_CONNECTION,
     options: { useNewUrlParser: true, useUnifiedTopology: true },
     file: (req, file) => {
-        const match = ["image/png", "image/jpg", "image/jpeg"];
+        const match = ["image/png", "image/jpg"];
 
         if (match.indexOf(file.mimetype) === -1) {
             console.log('file.mimetype === -1')
@@ -24,4 +22,5 @@ const storage = new GridFsStorage({
     },
 });
 
+console.log('store', storage)
 module.exports = multer({ storage });

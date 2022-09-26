@@ -35,7 +35,7 @@ locationButton.addEventListener('click', event => {
       console.log('current position: ', fetchedLocation);
 
       let nominatimURL = 'https://nominatim.openstreetmap.org/reverse';
-      nominatimURL += '?format=jsonv2';   // format=[xml|json|jsonv2|geojson|geocodejson]
+      nominatimURL += '?format=jsonv2';   
       nominatimURL += '&lat=' + fetchedLocation.latitude;
       nominatimURL += '&lon=' + fetchedLocation.longitude;
 
@@ -202,18 +202,13 @@ function createCard(card) {
     cardTitle.style.marginTop = '30px';
   
     cardWrapper.appendChild(cardTitle);
-  
     let cardTitleTextElement = document.createElement('div');
     cardTitleTextElement.className = 'mdl-card__title-text';
     cardTitleTextElement.textContent = card.title;
-    // cardTitleTextElement.classList.add('whiteText');
-  
     cardWrapper.appendChild(cardTitleTextElement)
-  
     let cardTitleTextTextElement = document.createElement('p');
     cardTitleTextTextElement.className = 'mdl-card__text-text';
     cardTitleTextTextElement.textContent = card.text;
-  
   
     cardWrapper.appendChild(cardTitleTextTextElement);
     let cardSupportingText = document.createElement('p');
