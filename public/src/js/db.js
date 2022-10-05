@@ -1,12 +1,16 @@
-const db = idb.openDB('posts-store', 2, {
+const db = idb.openDB('posts-store', 1, {
     upgrade(db) {
+        // Create a store of objects
         const store1 = db.createObjectStore('posts', {
-            keyPath: '_id'
+            keyPath: '_id',
+            autoIncrement: true
         });
         store1.createIndex('_id', '_id');
 
+        // Create another store of objects
         const store2 = db.createObjectStore('sync-posts', {
             keyPath: 'id',
+            autoIncrement: true
         });
         store2.createIndex('id', 'id');
     },
@@ -40,6 +44,7 @@ function clearAllData(st) {
             return tx.done;
         })
 }
+
 
 function deleteOneData(st, id) {
     db

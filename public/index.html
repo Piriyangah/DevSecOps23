@@ -12,7 +12,9 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.purple-pink.min.css" /> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.14.1/css/ol.css" type="text/css">
     <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.14.1/build/ol.js"></script>
+    <add key="webpages:Enabled" value="true" />
     <link rel="stylesheet" href="/src/css/app.css">
     <link rel="stylesheet" href="/src/css/feed.css">
     <link rel="manifest" href="/manifest.webmanifest">
@@ -45,7 +47,6 @@
     }
 }
 
-
 .clearfix:after {
             content: "";
             display: table;
@@ -75,8 +76,8 @@
                
                 
                 <nav class="mdl-navigation mdl-layout--large-screen-only">
-                    <a class="mdl-navigation__link" href="/recipe.html">Recipes</a>
-                    <a class="mdl-navigation__link" href="/about.html">About</a>
+                    <a class="mdl-navigation__link" href="/recipe">Recipes</a>
+                    <a class="mdl-navigation__link" href="/about">About</a>
                     <div class="drawer-option">
                         <button class="enable-notifications mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--accent">
                             Subscribe
@@ -88,8 +89,8 @@
         <div class="mdl-layout__drawer">
             <span class="mdl-layout-title">vegan recipes</span>
             <nav class="mdl-navigation">
-                <a class="mdl-navigation__link" href="/recipe.html">Recipes</a>
-                <a class="mdl-navigation__link" href="/about.html">About</a>
+                <a class="mdl-navigation__link" href="/recipe">Recipe</a>
+                <a class="mdl-navigation__link" href="/about">About</a>
                 <div class="drawer-option">
                     <button class="enable-notifications mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--accent">
                         Subscribe
@@ -136,7 +137,7 @@
 
             <ul>
                   <li> <img src="./src/images/1.JPG" alt=""> 
-                  <a class="mdl-navigation__link" href="/recipe.html"></a> </li> 
+                  <a class="mdl-navigation__link" href="/recipe"></a> </li> 
                   <li> <img src="./src/images/2.JPG" alt=""> </li> 
                   <li> <img src="./src/images/3.JPG" alt=""> </li> 
             </ul>
@@ -169,32 +170,10 @@
     </div>
 </div>
 
-<script>
-
-if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js').then(function(registration) {
-            console.log('Service worker registration succeeded:', registration);
-            console.log('Scope ist ' + registration.scope);
-           
-        }).catch(function(error) {
-            console.log('Service worker registration failed:', error);
-        });
-
-        if (navigator.serviceWorker.controller) {
-            console.log('This page is currently controlled by:', navigator.serviceWorker.controller);
-        }
-        navigator.serviceWorker.oncontrollerchange = function() {
-            console.log('This page is now controlled by:', navigator.serviceWorker.controller);
-        };
-    } else {
-        console.log('Service workers are not supported.');
-    }        
-</script>
-
 <script defer src="/src/js/material.min.js"></script>
-<script src="/src/js/db.js"></script>
 <script src="/src/js/app.js"></script>
 <script src="/src/js/idb.js"></script>
+<script src="/src/js/db.js"></script>
 <script src="/src/js/feed.js"></script>
 
 </body>

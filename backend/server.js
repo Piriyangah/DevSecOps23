@@ -1,41 +1,33 @@
 const express = require('express');
 const cors = require('cors');
 const postsRoutes = require('./routes/posts.routes');
-const uploadRoutes = require('./routes/upload.routes');
-const downloadRoute = require('./routes/download.routes');
-const deleteRoute = require('./routes/delete.routes');
 const subscriptionRoute = require('./routes/subscription.routes');
 
-const mongoose = require('mongoose');
 require('dotenv').config();
+const mongoose = require('mongoose');
 
 const app = express();
+const PORT = process.env.PORT || 3000;
+
 app.use(express.json());
 app.use(cors());
-
-
-app.use('/posts', postsRoutes);
-app.use('/upload', uploadRoutes);
-app.use('/download', downloadRoute);
-app.use('/image', uploadRoutes);
-app.use('/delete', deleteRoute);
+app.use('/posts', postsRoutes)
 app.use('/subscription', subscriptionRoute);
 
-app.listen(3000, (error) => {
-    if (error) {
-        console.log(error);
+app.listen(PORT, (error) => {
+    if(error) {
+        console.log(error)
     } else {
-        console.log(`server running on http://localhost:${process.env.PORT}`);
+        console.log(`server running on http://localhost:${PORT}`);
     }
- }); 
+})
 
-// connect to mongoDB
-mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true, useUnifiedTopology: true })
+.then(
+    () => console.log('connected to BD')
+).catch(
+    err => console.error(err, 'conncetion error')
+)
+
 const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', () => {
-    console.log('connected to DB');
-});
-
-
 

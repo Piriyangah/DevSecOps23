@@ -3,8 +3,9 @@ const router = express.Router();
 const Post = require('../models/posts')
 const upload = require('../middleware/upload')
 const mongoose = require('mongoose')
-require('dotenv').config()
 const webpush = require('web-push');
+require('dotenv').config()
+
 
 const publicVapidKey = 'BDwTqi0wwa_paNs4RDlP550-CP-Pyoi92hVh9xpPhehbwGIdqQmEJaG9rgdxBDgxFZW-Q1lQ-N7gDqCNSYwx7tY';
 const privateVapidKey = 'Bf0C8DTY1XhCaV1Dgm1Aovr2sPbJkAdTLfH_vmuW3Pg';

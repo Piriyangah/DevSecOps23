@@ -18,15 +18,11 @@
   "author": "A. Rodionova",
   "license": "ISC",
   "devDependencies": {
-    "http-server": "^14.1.0",
-    "nodemon": "^2.0.20",
-    "workbox-cli": "^6.5.4"
+    "http-server": "^14.1.0"
   },
   "dependencies": {
-    "idb": "^7.1.0",
+    "choco": "^0.2.1",
     "ngrok": "^4.3.3",
-    "ol": "^7.1.0",
-    "watch": "^1.0.2",
-    "web-push": "^3.5.0"
+    "ol": "^7.1.0"
   }
 }
