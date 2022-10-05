@@ -185,7 +185,7 @@ function createCard(card) {
   sharedMomentsArea.appendChild(cardWrapper);
 }
 
-fetch('http://localhost:3000/posts')
+fetch('https://localhost:3000/posts')
     .then((res) => {
         return res.json();
     })
@@ -220,7 +220,7 @@ function sendDataToBackend() {
 
     console.log('formData', formData)
    
-    fetch('http://localhost:3000/posts', {
+    fetch('s://localhost:3000/posts', {
         method: 'POST',
         body: formData
     })

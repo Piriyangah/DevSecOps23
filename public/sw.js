@@ -20,10 +20,10 @@ self.addEventListener('install', event => {
                     '/src/js/idb.js',
                     '/src/css/app.css',
                     '/src/css/feed.css',
-                    '/src/images/htw.jpg',
+                    '/src/images/1.png',
                     'https://fonts.googleapis.com/css?family=Roboto:400,700',
                     'https://fonts.googleapis.com/icon?family=Material+Icons',
-                    'https://code.getmdl.io/1.3.0/material.blue_grey-red.min.css'
+                    'https://code.getmdl.io/1.3.0/material.purple-pink.min.css'
                 ]);
             })
     );
@@ -188,9 +188,8 @@ self.addEventListener('sync', event => {
                                                 })
                                         );
                                     }
-                                });
-
-                                self.addEventListener('push', event => {
+                                });                                
+self.addEventListener('push', event => {
                                     console.log('push notification received', event);
                                     let data = { title: 'Test', content: 'Fallback message', openUrl: '/'};
                                     //let data = { title: 'Test', content: 'Fallback message'};
@@ -209,6 +208,6 @@ self.addEventListener('sync', event => {
                                     event.waitUntil(
                                         self.registration.showNotification(data.title, options)
                                     );
-                                });
+});
                                    
                   
