@@ -3,9 +3,7 @@ const upload = require('../middleware/upload');
 const router = express.Router();
 
 router.post('/', upload.single('file'), (req, res) => {
-    // req.file is the `file` file
     if (req.file === undefined) {
-
         return res.send({
             "message": "no file selected"
         });
