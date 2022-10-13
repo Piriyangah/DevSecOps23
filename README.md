@@ -37,8 +37,6 @@ Dieses Projekt enthält die Semesteraufgabe aus - aktuelle Trends der IKT 2022. 
 
 - verwendet Hintergrundsynchronisation
 
-- verwendet Push-Nachrichten
-
 - verwendet die Gelocation API
 
 - verwendet die Kamera

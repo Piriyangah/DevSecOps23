@@ -228,6 +228,57 @@ function updateUI(data) {
     createCard(card);
   }
 }
+
+form.addEventListener('submit', event => {
+  event.preventDefault(); 
+
+  if (file == null) {
+      alert('Erst Foto aufnehmen!')
+      return;
+  }
+  if (titleInput.value.trim() === '' || locationInput.value.trim() === '') {
+      alert('Bitte Titel und Location angeben!')
+      return;
+  }
+
+  closeCreatePostModal();
+
+  titleValue = titleInput.value;
+  locationValue = locationInput.value;
+  console.log('titleInput', titleValue)
+  console.log('locationInput', locationValue)
+  console.log('file', file)
+
+  
+  if('serviceWorker' in navigator && 'SyncManager' in window) {
+    navigator.serviceWorker.ready
+        .then( sw => {
+          //Daten in IndexedDB speichern
+          let post = {
+            id: new Date().toISOString(),
+            title: titleValue,
+            location: locationValue,
+            image_id: file      // file durch den Foto-Button belegt
+        };
+        //posts-store in indexeddb
+        writeData('sync-posts', post)
+        .then( () => {
+
+          return sw.sync.register('sync-new-post');
+
+        })
+
+        then( () => {
+          let snackbarContainer = new MaterialSnackbar(document.querySelector('#confirmation-toast'));
+          let data = { message: 'Eingaben zum Synchronisieren gespeichert!', timeout: 2000};
+          snackbarContainer.showSnackbar(data);
+        });
+      });
+} else {
+  sendDataToBackend();
+}
+});
+
 //Bild im Backend speichern
 function sendDataToBackend() {
   const formData = new FormData();
@@ -255,6 +306,7 @@ function sendDataToBackend() {
       updateUI([newPost]);
     });
 }
+
 
 //Bild hochladen
 imagePicker.addEventListener("change", (event) => {

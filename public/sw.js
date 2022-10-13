@@ -45,49 +45,54 @@ self.addEventListener("activate", (event) => {
   return self.clients.claim();
 });
 
-self.addEventListener("fetch", (event) => {
-  if (!event.request.url.includes("http")) return; // skip the request. if request is not made with http protocol
-  if (event.request.url.includes("myFile.jpg")) return; // skip the request. see feed.js fetch(imageURI)
 
-  const url = "http://localhost:3000/posts";
-  if (event.request.url.indexOf(url) >= 0) {
-    console.log("event.request", event.request);
-    event.respondWith(
-      fetch(event.request).then((res) => {
-        if (event.request.method === "GET") {
-          const clonedResponse = res.clone();
-          clearAllData("posts").then(() => {
-            clonedResponse.json().then((data) => {
-              for (let key in data) {
-                writeData("posts", data[key]);
-              }
-            });
-          });
-        }
-        return res;
-      })
-    );
+self.addEventListener('fetch', event => {
+  if (!event.request.url.includes('http')) return;        // skip the request. if request is not made with http protocol
+  if (event.request.url.includes('myFile.jpg')) return;   // skip the request. see feed.js fetch(imageURI)
+
+  const url = 'http://localhost:3000/posts';
+  if(event.request.url.indexOf(url) >= 0) {
+      console.log('event.request', event.request)
+      event.respondWith(
+          fetch(event.request)
+              .then ( res => {
+                  if(event.request.method === 'GET') {
+                      const clonedResponse = res.clone();
+                      clearAllData('posts')
+                      .then( () => {
+                          clonedResponse.json()
+                          .then( data => {
+                              for(let key in data)
+                              {
+                                  writeData('posts', data[key]);
+                              }
+                          })
+                      })
+                  }
+                  return res;
+              })
+      )
   } else {
-    event.respondWith(
-      caches.match(event.request).then((response) => {
-        if (response) {
-          return response;
-        } else {
-          console.log("event.request", event.request);
-          return fetch(event.request).then((res) => {
-            // nicht erneut response nehmen, haben wir schon
-            return caches
-              .open(CURRENT_DYNAMIC_CACHE) // neuer, weiterer Cache namens dynamic
-              .then((cache) => {
-                cache.put(event.request.url, res.clone());
-                return res;
-              });
-          });
-        }
+      event.respondWith(
+          caches.match(event.request)
+              .then( response => {
+                  if(response) {
+                      return response;
+                  } else {
+                      console.log('event.request', event.request)
+                      return fetch(event.request)
+                          .then( res => {     // nicht erneut response nehmen, haben wir schon
+                              return caches.open(CURRENT_DYNAMIC_CACHE)      // neuer, weiterer Cache namens dynamic
+                                  .then( cache => {
+                                      cache.put(event.request.url, res.clone());
+                                      return res;
+                                  })
+                              });
+                          }
+                      })
+              )
+          }
       })
-    );
-  }
-});
 
 self.addEventListener("sync", (event) => {
   console.log("service worker --> background syncing ...", event);
@@ -186,7 +191,6 @@ self.addEventListener("notificationclick", (event) => {
 self.addEventListener("push", (event) => {
   console.log("push notification received", event);
   let data = { title: "Test", content: "Fallback message", openUrl: "/" };
-  //let data = { title: 'Test', content: 'Fallback message'};
   if (event.data) {
     data = JSON.parse(event.data.text());
   }
