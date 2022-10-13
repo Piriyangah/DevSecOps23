@@ -1,0 +1,44 @@
+h5 {text-align: center;}
+h3 {text-align: center;}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 20%;
+  }
+
+  div.container4 {
+    height: 10em;
+    position: relative;
+    display: block; 
+}
+
+
+  @media (min-width: 600px) {
+      .shared-moment-card.mdl-card {
+          width: 60%;
+      }
+  }
+  
+  @media (min-width: 1200px) {
+      .shared-moment-card.mdl-card {
+          width: 45%;
+      }
+  }
+  
+  .shared-moment-card .mdl-card__title {
+      height: 250px;
+  }
+  
+  @media (min-height: 600px) {
+      .shared-moment-card .mdl-card__title {
+          height: 300px;
+      }
+  }
+  
+  @media (min-height: 1200px) {
+      .shared-moment-card .mdl-card__title {
+          height: 380px;
+      }
+  }
