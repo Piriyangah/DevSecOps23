@@ -1,4 +1,4 @@
-# Progressive Web Apps - Vegane Rezepte Blog
+# Progressive Web App - Vegane Rezepte Blog
 
 Dieses Projekt enthält die Semesteraufgabe aus - aktuelle Trends der IKT 2022. Im Laufe des Semesters wurde eine Progressive Web Application entwickelt. Diese PWA ist ein Blog über vegane Rezepte. 
 
